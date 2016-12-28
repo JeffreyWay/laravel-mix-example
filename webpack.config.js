@@ -25,9 +25,9 @@ Mix.finalize();
  | Webpack Entry
  |--------------------------------------------------------------------------
  |
- | We'll first specify the entry point for Webpack. By default, we'll
+ | We'll first specify the entry point for Webpack. By default, we
  | assume a single bundled file, but you may call Mix.extract()
- | to make a separate bundle specifically for vendor libraries.
+ | to make a bundle specifically for your vendor libraries.
  |
  */
 
@@ -45,8 +45,8 @@ if (Mix.js.vendor) {
  |--------------------------------------------------------------------------
  |
  | Webpack naturally requires us to specify our desired output path and
- | file name. We'll simply echo what you passed to with Mix.js().
- | Note that, for Mix.version(), we'll properly hash the file.
+ | file name. We'll simply echo what you passed to us with Mix.js().
+ | Note that, for Mix.version(), we will add a hash to the file.
  |
  */
 
@@ -73,9 +73,9 @@ module.exports.module = {
             options: {
                 loaders: {
                     js: 'babel-loader' + Mix.babelConfig()
-                  },
+                },
                   
-                  postcss: [
+                postcss: [
                     require('autoprefixer')
                 ]
             }
@@ -257,7 +257,7 @@ if (Mix.versioning.enabled) {
     Mix.versioning.record();
 
     module.exports.plugins.push(
-        new plugins.WebpackOnBuildPlugin(stats => {
+        new plugins.WebpackOnBuildPlugin(() => {
             Mix.versioning.prune(Mix.publicPath);
         })
     );
@@ -266,7 +266,7 @@ if (Mix.versioning.enabled) {
 
 if (Mix.combine || Mix.minify) {
     module.exports.plugins.push(
-        new plugins.WebpackOnBuildPlugin(stats => {
+        new plugins.WebpackOnBuildPlugin(() => {
             Mix.concatenateAll().minifyAll();
         })
     );
