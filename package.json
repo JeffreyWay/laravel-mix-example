@@ -1,10 +1,10 @@
 {
   "private": true,
   "scripts": {
-    "webpack": "cross-env NODE_ENV=development webpack --progress --hide-modules",
-    "dev": "cross-env NODE_ENV=development webpack --watch --progress --hide-modules",
-    "hmr": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
-    "production": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "webpack": "cross-env NODE_ENV=development webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "dev": "cross-env NODE_ENV=development webpack --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hmr": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "cross-env NODE_ENV=production webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
     "axios": "^0.15.2",
