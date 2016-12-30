@@ -1,3 +1,6 @@
+### This a demonstration repository
+This repository provides demonstration for https://github.com/JeffreyWay/laravel-mix (Laravel Mix).
+
 # Try It Out
 
 ```bash
