@@ -9,7 +9,7 @@ function mix($path, $json = false, $shouldHotReload = false)
 
     if (! $json) {
         $manifestPath = public_path('manifest.json');
-        $shouldHotReload = file_exists(public_path('framework/cache/hot'));
+        $shouldHotReload = file_exists(public_path('hot'));
 
         if (! file_exists($manifestPath)) {
             throw new Exception(
