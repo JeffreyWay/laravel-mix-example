@@ -8,7 +8,7 @@ function mix($path, $json = false, $shouldHotReload = false)
     if (! $shouldHotReload) static $shouldHotReload;
 
     if (! $json) {
-        $manifestPath = storage_path('framework/cache/Mix.json');
+        $manifestPath = public_path('manifest.json');
         $shouldHotReload = file_exists(storage_path('framework/cache/hot'));
 
         if (! file_exists($manifestPath)) {
@@ -21,13 +21,16 @@ function mix($path, $json = false, $shouldHotReload = false)
         $json = json_decode(file_get_contents($manifestPath), true);
     }
 
-    $path = collect($json['assetsByChunkName'])
-        ->flatten()
-        ->first(function ($compiledFile) use ($path, $json) {
-            $compiledFile = trim(str_replace($json['hash'].'.', '', $compiledFile), '/');
+    $path = pathinfo($path, PATHINFO_BASENAME);
 
-            return $compiledFile === trim($path, '/');
-        });
+    if (! array_key_exists($path, $json)) {
+        throw new Exception(
+            'Unknown file path. Please check your requested ' .
+            'webpack.mix.js output path, and try again.'
+        );
+    }
 
-    return $shouldHotReload ? "http://localhost:8080{$path}" : url($path);
+    return $shouldHotReload
+        ? "http://localhost:8080{$json[$path]}"
+        : url($json[$path]);
 }
