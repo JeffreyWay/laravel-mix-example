@@ -2,13 +2,13 @@
 
 // mix('css/app.css')
 // mix('js/app.js')
-function mix($path, $json = false, $shouldHotReload = false)
+function mix($path, $manifest = false, $shouldHotReload = false)
 {
-    if (! $json) static $json;
+    if (! $manifest) static $manifest;
     if (! $shouldHotReload) static $shouldHotReload;
 
-    if (! $json) {
-        $manifestPath = public_path('manifest.json');
+    if (! $manifest) {
+        $manifestPath = public_path('mix-manifest.json');
         $shouldHotReload = file_exists(public_path('hot'));
 
         if (! file_exists($manifestPath)) {
@@ -18,19 +18,19 @@ function mix($path, $json = false, $shouldHotReload = false)
             );
         }
 
-        $json = json_decode(file_get_contents($manifestPath), true);
+        $manifest = json_decode(file_get_contents($manifestPath), true);
     }
 
-    $path = pathinfo($path, PATHINFO_BASENAME);
+    if (! starts_with($path, '/')) $path = "/{$path}";
 
-    if (! array_key_exists($path, $json)) {
+    if (! array_key_exists($path, $manifest)) {
         throw new Exception(
-            'Unknown file path. Please check your requested ' .
-            'webpack.mix.js output path, and try again.'
+            "Unknown Laravel Mix file path: {$path}. Please check your requested " .
+            "webpack.mix.js output path, and try again."
         );
     }
 
     return $shouldHotReload
-        ? "http://localhost:8080{$json[$path]}"
-        : url($json[$path]);
+        ? "http://localhost:8080{$manifest[$path]}"
+        : url($manifest[$path]);
 }
